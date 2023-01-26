@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/analyze_style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock styles %}
+
+{% block content %}
+    <main>
+        <section class="header">
+            <a href="{% url 'home' %}"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+            <div class="title">
+                <h2>Tweet Sentiment Analysis</h2>
+                <p>Input your own tweet or message for classification directly from below.</p>
+            </div>
+            <a href="{% url 'home' %}"><i class="fa fa-times" aria-hidden="true"></i></a>
+        </section>
+        <section class="sectioning">
+            <div>
+                <span>Classify</span>
+                <span>Data Library</span>
+            </div>
+        </section>
+        <section class="classification">
+            <div id="input-section">
+                <form method="POST">
+                    {% csrf_token %}
+                    <h3>Classify your own text</h3>
+                    {{form.review}}
+                    <!-- <textarea id="input-text" placeholder="Enter text to classify"></textarea> -->
+                    <button id="submit-button" type="submit">Classify Text</button>
+                </form>
+            </div>
+            <div id="output-section">
+                <table>
+                    <caption>Classification Result</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Class</th>
+                            <th scope="col">Confidence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if predictions %}
+                            {% for class, prediction in predictions %}
+                                <tr>
+                                    <td>{{ class }}</td>
+                                    <td>{{ prediction }}%</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+              </div>
+        </section>
+    </main>
+{% endblock content %}
